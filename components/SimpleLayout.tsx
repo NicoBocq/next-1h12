@@ -1,12 +1,17 @@
-import { Container } from '@/components/Container'
+import {HTMLAttributes, ReactNode} from 'react'
+
+import Container from '@/components/Container'
 
 export type SimpleLayoutProps = {
   title: string
   intro: string
-  children: React.ReactNode
-}
+} & HTMLAttributes<HTMLDivElement>
 
-const SimpleLayout = ({ title, intro, children }: SimpleLayoutProps): JSX.Element => {
+const SimpleLayout = ({
+  title,
+  intro,
+  children,
+}: SimpleLayoutProps): JSX.Element => {
   return (
     <Container className="mt-16 sm:mt-32">
       <header className="max-w-2xl">

@@ -1,8 +1,15 @@
+import {ReactNode} from 'react'
+
 import Link from 'next/link'
 
-import { Container } from '@/components/Container'
+import Container from '@/components/Container'
 
-function NavLink({ href, children }) {
+export type NavLinkProps = {
+  href: string
+  children: ReactNode
+}
+
+const NavLink = ({href, children}: NavLinkProps): JSX.Element => {
   return (
     <Link
       href={href}
@@ -13,7 +20,7 @@ function NavLink({ href, children }) {
   )
 }
 
-export function Footer() {
+const Footer = (): JSX.Element => {
   return (
     <footer className="mt-32">
       <Container.Outer>
@@ -37,3 +44,5 @@ export function Footer() {
     </footer>
   )
 }
+
+export default Footer

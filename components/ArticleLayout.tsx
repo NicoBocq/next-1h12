@@ -1,19 +1,21 @@
-import Head from 'next/head'
-import { useRouter } from 'next/router'
+import {HTMLAttributes} from 'react'
 
-import { Container } from '@/components/Container'
+import {ArrowLeftIcon} from '@heroicons/react/24/solid'
+import Head from 'next/head'
+import {useRouter} from 'next/router'
+
+import Container from '@/components/Container'
 import Prose from '@/components/Prose'
-import { ArrowLeftIcon } from '@heroicons/react/24/solid'
+import {formatDate} from '@/utils'
 
 export type ArticleLayoutProps = {
-  children: React.ReactNode
   meta: {
     title: string
     description: string
-    date: string  
+    date: string
   }
   previousPathname?: string
-}
+} & HTMLAttributes<HTMLDivElement>
 
 const ArticleLayout = ({
   children,

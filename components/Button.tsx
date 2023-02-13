@@ -1,6 +1,8 @@
-import React, { ReactNode } from 'react'
-import Link from 'next/link'
+import React, {ReactNode} from 'react'
+import {ButtonHTMLAttributes} from 'react'
+
 import clsx from 'clsx'
+import Link from 'next/link'
 
 const variantStyles = {
   primary:
@@ -11,12 +13,16 @@ const variantStyles = {
 
 export type ButtonProps = {
   variant?: 'primary' | 'secondary'
-  className?: string
   href?: string
-  children: ReactNode
-}
+} & ButtonHTMLAttributes<HTMLButtonElement> &
+  ButtonHTMLAttributes<HTMLAnchorElement>
 
-const Button = ({ variant = 'primary', className, href, ...props }: ButtonProps): JSX.Element => {
+const Button = ({
+  variant = 'primary',
+  className,
+  href,
+  ...props
+}: ButtonProps): JSX.Element => {
   className = clsx(
     'inline-flex items-center gap-2 justify-center rounded-md py-2 px-3 text-sm outline-offset-2 transition active:transition-none',
     variantStyles[variant],

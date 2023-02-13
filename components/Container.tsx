@@ -1,11 +1,12 @@
-import React, { forwardRef } from 'react'
-import clsx from 'clsx'
-import { HTMLAttributes } from 'react'
+import React, {forwardRef} from 'react'
+import {ForwardRefExoticComponent, HTMLAttributes} from 'react'
 
-const OuterContainer = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(function OuterContainer(
-  { className, children, ...props },
-  ref
-): JSX.Element {
+import clsx from 'clsx'
+
+const OuterContainer = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function OuterContainer({className, children, ...props}, ref): JSX.Element {
   return (
     <div ref={ref} className={clsx('sm:px-8', className)} {...props}>
       <div className="mx-auto max-w-7xl lg:px-8">{children}</div>
@@ -13,10 +14,10 @@ const OuterContainer = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>
   )
 })
 
-const InnerContainer = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(function InnerContainer(
-  { className, children, ...props },
-  ref
-): JSX.Element {
+const InnerContainer = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function InnerContainer({className, children, ...props}, ref): JSX.Element {
   return (
     <div
       ref={ref}
@@ -28,23 +29,24 @@ const InnerContainer = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>
   )
 })
 
-export type ContainerProps = HTMLAttributes<HTMLDivElement> & {
-  Outer?: typeof OuterContainer
-  Inner?: typeof InnerContainer
+export type ContainerComponentType = ForwardRefExoticComponent<
+  HTMLAttributes<HTMLDivElement>
+> & {
+  Outer: typeof OuterContainer
+  Inner: typeof InnerContainer
 }
 
-export type ContainerWithoutRefProps = Omit<ContainerProps, 'ref'>
-
-const ContainerWithoutRef = (props: ContainerWithoutRefProps, ref: React.Ref<HTMLDivElement>): JSX.Element => {
-  const { children, ...restProps } = props
-  return (
-    <OuterContainer ref={ref} {...restProps}>
-      <InnerContainer>{children}</InnerContainer>
-    </OuterContainer>
-  )
-}
-
-export const Container = forwardRef(ContainerWithoutRef)
+const Container = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+  function Container({children, ...props}, ref): JSX.Element {
+    return (
+      <OuterContainer ref={ref} {...props}>
+        <InnerContainer>{children}</InnerContainer>
+      </OuterContainer>
+    )
+  }
+) as ContainerComponentType
 
 Container.Outer = OuterContainer
 Container.Inner = InnerContainer
+
+export default Container

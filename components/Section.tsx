@@ -1,11 +1,10 @@
-import { useId } from 'react'
+import {HTMLAttributes, useId} from 'react'
 
 export type SectionProps = {
   title: string
-  children: React.ReactNode
-}
+} & HTMLAttributes<HTMLDivElement>
 
-const Section = ({ title, children }: SectionProps): JSX.Element => {
+const Section = ({title, children}: SectionProps): JSX.Element => {
   const id = useId()
 
   return (
