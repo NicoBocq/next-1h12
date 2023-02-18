@@ -4,9 +4,14 @@ import Image from 'next/image'
 
 import {Card} from '@/components/Card'
 import SimpleLayout from '@/components/SimpleLayout'
-import {getDatabase, sectionsId} from '@/services'
+import {getDatabase} from '@/services'
+import {ProjectItem} from '@/types'
 
-const SideProjects = ({projects}) => {
+export type SideProjectsProps = {
+  projects: ProjectItem[]
+}
+
+const SideProjects = ({projects}: SideProjectsProps): JSX.Element => {
   return (
     <>
       <Head>
@@ -35,7 +40,9 @@ const SideProjects = ({projects}) => {
                 /> */}
               </div>
               <h2 className="mt-6 text-base font-semibold text-zinc-800 dark:text-zinc-100">
-                <Card.Link href={project.url}>{project.title}</Card.Link>
+                <Card.Link href={`sideprojects/${project.id}`}>
+                  {project.title}
+                </Card.Link>
               </h2>
               <Card.Description>{project.description}</Card.Description>
               <p className="relative z-10 mt-6 flex items-center text-sm font-medium text-zinc-400 transition group-hover:text-teal-500 dark:text-zinc-200">
@@ -53,7 +60,7 @@ const SideProjects = ({projects}) => {
 export default SideProjects
 
 export const getStaticProps = async () => {
-  const projects = await getDatabase({id: sectionsId.XP})
+  const projects = await getDatabase({context: 'sideprojects'})
   return {
     props: {
       projects,

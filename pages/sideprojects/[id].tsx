@@ -1,17 +1,11 @@
-import {title} from 'process'
-
 import {NextConfig} from 'next'
 
 import ArticleLayout from '@/components/ArticleLayout'
-import {
-  ProjectFormatedResponse,
-  getDatabase,
-  getPage,
-  sectionsId,
-} from '@/services'
+import {getDatabase, getPage} from '@/services'
+import {ProjectItem} from '@/types'
 
 export type SideProjectsProps = {
-  meta: ProjectFormatedResponse
+  meta: ProjectItem
   previousPathname: string
 }
 
@@ -25,7 +19,7 @@ const SideProjects = ({meta, previousPathname}: SideProjectsProps) => {
 
 export const getStaticPaths = async () => {
   const projects = await getDatabase({
-    id: sectionsId.XP,
+    context: 'sideprojects',
   })
   const paths = projects.map((project) => ({
     params: {id: project.id},
@@ -39,7 +33,6 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context: NextConfig) => {
   const id = context.params.id
   const project = await getPage(id)
-  console.log(project)
   return {
     props: {
       meta: project,
