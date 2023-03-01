@@ -1,36 +1,21 @@
-import React, {ElementType, ReactNode} from 'react'
+import React, {ElementType, FC, PropsWithChildren, ReactNode} from 'react'
 
 import {ChevronRightIcon} from '@heroicons/react/24/solid'
 import clsx from 'clsx'
-import Link from 'next/link'
+import Link, {LinkProps} from 'next/link'
 
-export type CardProps = {
-  as?: ElementType
+export type CardProps<T extends ElementType> = {
+  as?: T
   className?: string
   children: ReactNode
 }
 
-// type AsProp<C extends React.ElementType> = {
-//   as?: C
-// }
-
-// type PropsToOmit<C extends React.ElementType, P> = keyof (AsProp<C> & P)
-
-// type PolymorphicComponentProp<
-//   C extends React.ElementType,
-//   Props = {}
-// > = React.PropsWithChildren<Props & AsProp<C>> &
-//   Omit<React.ComponentPropsWithoutRef<C>, PropsToOmit<C, Props>>
-
-export type PolymporphicProps = {
-  [K in keyof JSX.IntrinsicElements]: {as: K} & JSX.IntrinsicElements[K]
-}[keyof JSX.IntrinsicElements]
-
-export const Card = ({
-  as: Component = 'div',
+const Card = <T extends ElementType = 'div'>({
+  as,
   className,
   children,
-}: PolymporphicProps): JSX.Element => {
+}: CardProps<T>) => {
+  const Component = as || 'div'
   return (
     <Component
       className={clsx(className, 'group relative flex flex-col items-start')}
@@ -40,12 +25,7 @@ export const Card = ({
   )
 }
 
-export type CardLinkProps = {
-  href: string
-  children: ReactNode
-}
-
-const CardLink = ({children, ...props}: CardLinkProps): JSX.Element => {
+const CardLink: FC<LinkProps & PropsWithChildren> = ({children, ...props}) => {
   return (
     <>
       <div className="absolute -inset-y-6 -inset-x-4 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl" />
@@ -57,17 +37,18 @@ const CardLink = ({children, ...props}: CardLinkProps): JSX.Element => {
   )
 }
 
-export type CardTitleProps = {
-  as?: ElementType
+export type CardTitleProps<T extends ElementType> = {
+  as?: T
   href?: string
   children: ReactNode
 }
 
-const CardTitle = ({
-  as: Component = 'h2',
+const CardTitle = <T extends ElementType = 'h2'>({
+  as,
   href,
   children,
-}: CardTitleProps): JSX.Element => {
+}: CardTitleProps<T>) => {
+  const Component = as || 'h2'
   return (
     <Component className="text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
       {href ? <Card.Link href={href}>{children}</Card.Link> : children}
@@ -75,23 +56,14 @@ const CardTitle = ({
   )
 }
 
-export type CardDescriptionProps = {
-  children: ReactNode
-}
-
-const CardDescription = ({children}: CardDescriptionProps): JSX.Element => {
+const CardDescription: FC<PropsWithChildren> = ({children}) => {
   return (
     <p className="relative z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400">
       {children}
     </p>
   )
 }
-
-export type CardCtaProps = {
-  children: ReactNode
-}
-
-const CardCta = ({children}: CardCtaProps): JSX.Element => {
+const CardCta: FC<PropsWithChildren> = ({children}) => {
   return (
     <div
       aria-hidden="true"
@@ -103,18 +75,21 @@ const CardCta = ({children}: CardCtaProps): JSX.Element => {
   )
 }
 
-export type CardEyebrowProps = {
-  as?: ElementType
+export type CardEyebrowProps<T extends ElementType> = {
+  as?: T
   decorate?: boolean
-} & PolymporphicProps
+  children: ReactNode
+  className?: string
+}
 
-const CardEyebrow = ({
-  as: Component = 'p',
+const CardEyebrow = <T extends ElementType = 'p'>({
+  as,
   decorate = false,
   className,
   children,
   ...props
-}: CardEyebrowProps): JSX.Element => {
+}: CardEyebrowProps<T>) => {
+  const Component = as || 'p'
   return (
     <Component
       className={clsx(
@@ -142,3 +117,5 @@ Card.Title = CardTitle
 Card.Description = CardDescription
 Card.Cta = CardCta
 Card.Eyebrow = CardEyebrow
+
+export default Card

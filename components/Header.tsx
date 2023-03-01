@@ -15,6 +15,12 @@ import {useRouter} from 'next/router'
 import Container from '@/components/Container'
 import avatarImage from '@/images/me.jpeg'
 
+const NAVIGATION = [
+  {name: 'Home', href: '/'},
+  {name: 'Sideprojects', href: '/sideprojects'},
+  {name: 'Experience', href: '/experience'},
+]
+
 export type MobileNavItemProps = {
   href: string
   children: ReactNode
@@ -120,11 +126,11 @@ const DesktopNavigation = (
   return (
     <nav {...props}>
       <ul className="flex rounded-full bg-white/90 px-3 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10">
-        <NavItem href="/about">About</NavItem>
-        <NavItem href="/articles">Articles</NavItem>
-        <NavItem href="/projects">Projects</NavItem>
-        <NavItem href="/speaking">Speaking</NavItem>
-        <NavItem href="/uses">Uses</NavItem>
+        {NAVIGATION.map((item) => (
+          <NavItem href={item.href} key={item.name}>
+            {item.name}
+          </NavItem>
+        ))}
       </ul>
     </nav>
   )
@@ -186,10 +192,11 @@ const AvatarContainer = ({
   )
 }
 
-export type AvatarProps = {
+export type AvatarProps = HTMLAttributes<HTMLAnchorElement> & {
   large?: boolean
-  className?: string
 }
+
+const assetsLoader = ({src}: {src: string}) => src
 
 const Avatar = ({
   large = false,
@@ -206,6 +213,7 @@ const Avatar = ({
       <Image
         src={avatarImage}
         alt=""
+        loader={assetsLoader}
         sizes={large ? '4rem' : '2.25rem'}
         className={clsx(
           'rounded-full bg-zinc-100 object-cover dark:bg-zinc-800',
@@ -220,8 +228,8 @@ const Avatar = ({
 const Header = (): JSX.Element => {
   const isHomePage = useRouter().pathname === '/'
 
-  const headerRef = useRef<HTMLDivElement>()
-  const avatarRef = useRef<HTMLDivElement>()
+  const headerRef = useRef<HTMLDivElement>(null)
+  const avatarRef = useRef<HTMLDivElement>(null)
   const isInitial = useRef(true)
 
   useEffect(() => {
@@ -237,7 +245,9 @@ const Header = (): JSX.Element => {
     }
 
     const updateHeaderStyles = () => {
-      const {top, height} = headerRef.current?.getBoundingClientRect()
+      const element = headerRef.current?.getBoundingClientRect()
+      const top = element?.top ?? 0
+      const height = element?.height ?? 0
       const scrollY = clamp(
         window.scrollY,
         0,

@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react'
-import {ButtonHTMLAttributes} from 'react'
+import {ButtonHTMLAttributes, FC} from 'react'
 
 import clsx from 'clsx'
 import Link from 'next/link'
@@ -11,18 +11,17 @@ const variantStyles = {
     'bg-zinc-50 font-medium text-zinc-900 hover:bg-zinc-100 active:bg-zinc-100 active:text-zinc-900/60 dark:bg-zinc-800/50 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 dark:active:bg-zinc-800/50 dark:active:text-zinc-50/70',
 }
 
-export type ButtonProps = {
-  variant?: 'primary' | 'secondary'
+type ButtonProps = {
   href?: string
-} & ButtonHTMLAttributes<HTMLButtonElement> &
-  ButtonHTMLAttributes<HTMLAnchorElement>
+  variant?: 'primary' | 'secondary'
+} & ButtonHTMLAttributes<HTMLButtonElement | HTMLAnchorElement>
 
-const Button = ({
+const Button: FC<ButtonProps> = ({
   variant = 'primary',
   className,
   href,
   ...props
-}: ButtonProps): JSX.Element => {
+}) => {
   className = clsx(
     'inline-flex items-center gap-2 justify-center rounded-md py-2 px-3 text-sm outline-offset-2 transition active:transition-none',
     variantStyles[variant],

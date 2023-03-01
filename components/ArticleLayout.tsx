@@ -1,4 +1,4 @@
-import {HTMLAttributes} from 'react'
+import {FC, HTMLAttributes} from 'react'
 
 import {ArrowLeftIcon} from '@heroicons/react/24/solid'
 import Head from 'next/head'
@@ -9,26 +9,24 @@ import Prose from '@/components/Prose'
 import {formatDate} from '@/utils'
 
 export type ArticleLayoutProps = {
-  meta: {
-    title: string
-    description: string
-    date: string
-  }
+  title?: string
+  description?: string
   previousPathname?: string
 } & HTMLAttributes<HTMLDivElement>
 
-const ArticleLayout = ({
+const ArticleLayout: FC<ArticleLayoutProps> = ({
   children,
-  meta,
+  title,
+  description,
   previousPathname,
-}: ArticleLayoutProps): JSX.Element => {
+}) => {
   const router = useRouter()
 
   return (
     <>
       <Head>
-        <title>{`${meta.title} - Spencer Sharp`}</title>
-        <meta name="description" content={meta.description} />
+        <title>{`${title}`}</title>
+        <meta name="description" content={description} />
       </Head>
       <Container className="mt-16 lg:mt-32">
         <div className="xl:relative">
@@ -46,15 +44,15 @@ const ArticleLayout = ({
             <article>
               <header className="flex flex-col">
                 <h1 className="mt-6 text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
-                  {meta.title}
+                  {title}
                 </h1>
-                <time
+                {/* <time
                   dateTime={meta.date}
                   className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
                 >
                   <span className="h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500" />
                   <span className="ml-3">{formatDate(meta.date)}</span>
-                </time>
+                </time> */}
               </header>
               <Prose className="mt-8">{children}</Prose>
             </article>
