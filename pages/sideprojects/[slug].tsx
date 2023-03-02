@@ -14,14 +14,16 @@ const SideProjects: NextPage<
   const description = meta?.description ?? ''
   const title = meta?.title ?? ''
   const cover = meta?.cover ?? ''
+  const release = meta?.release ?? ''
 
   return (
     <ArticleLayout
       title={title}
       description={description}
+      date={release}
       previousPathname={previousPathname}
     >
-      <Image src={cover} alt={title} width={600} height={300} />
+      <Image src={cover} alt={title} width={700} height={400} />
       {description}
     </ArticleLayout>
   )

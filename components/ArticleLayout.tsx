@@ -11,6 +11,7 @@ import {formatDate} from '@/utils'
 export type ArticleLayoutProps = {
   title?: string
   description?: string
+  date?: string
   previousPathname?: string
 } & HTMLAttributes<HTMLDivElement>
 
@@ -18,6 +19,7 @@ const ArticleLayout: FC<ArticleLayoutProps> = ({
   children,
   title,
   description,
+  date,
   previousPathname,
 }) => {
   const router = useRouter()
@@ -46,13 +48,13 @@ const ArticleLayout: FC<ArticleLayoutProps> = ({
                 <h1 className="mt-6 text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
                   {title}
                 </h1>
-                {/* <time
-                  dateTime={meta.date}
+                <time
+                  dateTime={date}
                   className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
                 >
                   <span className="h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500" />
-                  <span className="ml-3">{formatDate(meta.date)}</span>
-                </time> */}
+                  <span className="ml-3">{date}</span>
+                </time>
               </header>
               <Prose className="mt-8">{children}</Prose>
             </article>

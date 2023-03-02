@@ -7,7 +7,11 @@ const Prose: FC<PropsWithChildren & HTMLAttributes<HTMLDivElement>> = ({
   className,
 }) => {
   return (
-    <div className={clsx(className, 'prose dark:prose-invert')}>{children}</div>
+    <div
+      className={clsx(className, 'prose whitespace-pre-line dark:prose-invert')}
+    >
+      {children}
+    </div>
   )
 }
 
