@@ -1,29 +1,22 @@
-import {
-  AnchorHTMLAttributes,
-  FunctionComponent,
-  HTMLAttributes,
-  ReactElement,
-  ReactNode,
-} from 'react'
+import {FC, FunctionComponent, HTMLAttributes} from 'react'
 
+import type {InferGetStaticPropsType, Metadata, NextPage} from 'next'
 import Head from 'next/head'
+import Image from 'next/image'
 import Link, {LinkProps} from 'next/link'
 
-import {Card} from '@/components/Card'
+import Card from '@/components/Card'
 import Container from '@/components/Container'
+import Resume from '@/components/Resume'
 import {GitHubIcon, LinkedInIcon, TwitterIcon} from '@/components/SocialIcons'
-import {getDatabase, sectionsId} from '@/services'
-import {ProjectItem} from '@/types'
-
-export type HomeProps = {
-  sideprojects: ProjectItem[]
-}
+import {supabase} from '@/lib/supabase'
+import {Project} from '@/types'
 
 export type SocialLinkProps = LinkProps & {
   icon: FunctionComponent<HTMLAttributes<SVGElement>>
 }
 
-const SocialLink = ({icon: Icon, ...props}: SocialLinkProps): JSX.Element => {
+const SocialLink: FC<SocialLinkProps> = ({icon: Icon, ...props}) => {
   return (
     <Link className="group -m-1 p-1" {...props}>
       <Icon className="h-6 w-6 fill-zinc-500 transition group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300" />
@@ -31,26 +24,34 @@ const SocialLink = ({icon: Icon, ...props}: SocialLinkProps): JSX.Element => {
   )
 }
 
-const Article = ({article}): JSX.Element => {
+type ArticleProps = {
+  article: Project
+}
+
+const Article: FC<ArticleProps> = ({article}) => {
   return (
     <Card as="article">
-      <Card.Title href={`/sideprojects/${article.id}`}>
+      <Card.Title href={`/sideprojects/${article.slug}`}>
         {article.title}
       </Card.Title>
-      <Card.Eyebrow as="p">
-        {/* {article.Stack?.multi_select.map((stack) => (
-          <span key={stack.id}>{stack.Name}</span>
-        ))} */}
-      </Card.Eyebrow>
       <Card.Description>{article.description}</Card.Description>
-      <Card.Cta>Read article</Card.Cta>
+      <Card.Cta>Read project</Card.Cta>
     </Card>
   )
 }
 
-const Home = (props: HomeProps): JSX.Element => {
-  const {sideprojects} = props
-  console.log(sideprojects)
+export const metadata = {
+  title: 'Nicolas Bocquet - front-end developer',
+  description: 'Nicolas Bocquet - front-end developer',
+  icon: '/images/favicon.ico',
+  type: 'website',
+}
+
+const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  projects,
+  works,
+}) => {
+  console.log(projects)
   return (
     <>
       <Head>
@@ -113,13 +114,12 @@ const Home = (props: HomeProps): JSX.Element => {
         </h2>
         <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
           <div className="flex flex-col gap-16">
-            {sideprojects.map((sideproject) => (
-              <Article key={sideproject.id} article={sideproject} />
+            {projects?.map((project) => (
+              <Article key={project.id} article={project} />
             ))}
           </div>
           <div className="space-y-10 lg:pl-16 xl:pl-24">
-            {/* <Newsletter />
-            <Resume /> */}
+            {works && <Resume works={works} />}
           </div>
         </div>
       </Container>
@@ -130,12 +130,19 @@ const Home = (props: HomeProps): JSX.Element => {
 export default Home
 
 export const getStaticProps = async () => {
-  const sideprojects = await getDatabase({context: 'sideprojects'})
-
+  const {data: projects} = await supabase
+    .from('project')
+    .select(`*, stack ( name )`)
+  const {data: works} = await supabase
+    .from('work')
+    .select(`*`)
+    .limit(4)
+    .order('order')
   return {
     props: {
-      sideprojects,
+      projects,
+      works,
     },
-    revalidate: 1000,
+    revalidate: 60,
   }
 }
