@@ -6,3 +6,18 @@ export const formatDate = (dateString: string) => {
     timeZone: 'UTC',
   })
 }
+
+export const NAVLINKS = [
+  {
+    name: 'Home',
+    href: '/',
+  },
+  {
+    name: 'Experience',
+    href: '/experience',
+  },
+  {
+    name: 'Sideprojects',
+    href: '/sideprojects',
+  },
+]

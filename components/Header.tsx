@@ -1,4 +1,12 @@
-import {Fragment, HTMLAttributes, ReactNode, useEffect, useRef} from 'react'
+import {
+  CSSProperties,
+  FC,
+  Fragment,
+  HTMLAttributes,
+  ReactNode,
+  useEffect,
+  useRef,
+} from 'react'
 
 import {Popover, Transition} from '@headlessui/react'
 import {
@@ -14,19 +22,14 @@ import {useRouter} from 'next/router'
 
 import Container from '@/components/Container'
 import avatarImage from '@/images/me.jpeg'
-
-const NAVIGATION = [
-  {name: 'Home', href: '/'},
-  {name: 'Sideprojects', href: '/sideprojects'},
-  {name: 'Experience', href: '/experience'},
-]
+import {NAVLINKS} from '@/utils'
 
 export type MobileNavItemProps = {
   href: string
   children: ReactNode
 }
 
-const MobileNavItem = ({href, children}: MobileNavItemProps): JSX.Element => {
+const MobileNavItem: FC<MobileNavItemProps> = ({href, children}) => {
   return (
     <li>
       <Popover.Button as={Link} href={href} className="block py-2">
@@ -36,58 +39,37 @@ const MobileNavItem = ({href, children}: MobileNavItemProps): JSX.Element => {
   )
 }
 
-const MobileNavigation = (props: {className: string}): JSX.Element => {
+const MobileNavigation: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
   return (
     <Popover {...props}>
       <Popover.Button className="group flex items-center rounded-full bg-white/90 px-4 py-2 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10 dark:hover:ring-white/20">
         Menu
         <ChevronDownIcon className="ml-3 h-auto w-2 stroke-zinc-500 group-hover:stroke-zinc-700 dark:group-hover:stroke-zinc-400" />
       </Popover.Button>
-      <Transition.Root>
-        <Transition.Child
-          as={Fragment}
-          enter="duration-150 ease-out"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="duration-150 ease-in"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <Popover.Overlay className="fixed inset-0 z-50 bg-zinc-800/40 backdrop-blur-sm dark:bg-black/80" />
-        </Transition.Child>
-        <Transition.Child
-          as={Fragment}
-          enter="duration-150 ease-out"
-          enterFrom="opacity-0 scale-95"
-          enterTo="opacity-100 scale-100"
-          leave="duration-150 ease-in"
-          leaveFrom="opacity-100 scale-100"
-          leaveTo="opacity-0 scale-95"
-        >
-          <Popover.Panel
-            focus
-            className="fixed inset-x-4 top-8 z-50 origin-top rounded-3xl bg-white p-8 ring-1 ring-zinc-900/5 dark:bg-zinc-900 dark:ring-zinc-800"
-          >
-            <div className="flex flex-row-reverse items-center justify-between">
-              <Popover.Button aria-label="Close menu" className="-m-1 p-1">
-                <XMarkIcon className="h-6 w-6 text-zinc-500 dark:text-zinc-400" />
-              </Popover.Button>
-              <h2 className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                Navigation
-              </h2>
-            </div>
-            <nav className="mt-6">
-              <ul className="-my-2 divide-y divide-zinc-100 text-base text-zinc-800 dark:divide-zinc-100/5 dark:text-zinc-300">
-                <MobileNavItem href="/about">About</MobileNavItem>
-                <MobileNavItem href="/articles">Articles</MobileNavItem>
-                <MobileNavItem href="/projects">Projects</MobileNavItem>
-                <MobileNavItem href="/speaking">Speaking</MobileNavItem>
-                <MobileNavItem href="/uses">Uses</MobileNavItem>
-              </ul>
-            </nav>
-          </Popover.Panel>
-        </Transition.Child>
-      </Transition.Root>
+
+      <Popover.Overlay className="fixed inset-0 z-50 bg-zinc-800/40 backdrop-blur-sm dark:bg-black/80" />
+      <Popover.Panel
+        focus
+        className="fixed inset-x-4 top-8 z-50 origin-top rounded-3xl bg-white p-8 ring-1 ring-zinc-900/5 dark:bg-zinc-900 dark:ring-zinc-800"
+      >
+        <div className="flex flex-row-reverse items-center justify-between">
+          <Popover.Button aria-label="Close menu" className="-m-1 p-1">
+            <XMarkIcon className="h-6 w-6 text-zinc-500 dark:text-zinc-400" />
+          </Popover.Button>
+          <h2 className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+            Navigation
+          </h2>
+        </div>
+        <nav className="mt-6">
+          <ul className="-my-2 divide-y divide-zinc-100 text-base text-zinc-800 dark:divide-zinc-100/5 dark:text-zinc-300">
+            {NAVLINKS.map((item, index) => (
+              <MobileNavItem href={item.href} key={`mobile-nav-${index}`}>
+                {item.name}
+              </MobileNavItem>
+            ))}
+          </ul>
+        </nav>
+      </Popover.Panel>
     </Popover>
   )
 }
@@ -97,7 +79,7 @@ export type NavItemProps = {
   children: ReactNode
 }
 
-const NavItem = ({href, children}: NavItemProps): JSX.Element => {
+const NavItem: FC<NavItemProps> = ({href, children}) => {
   const isActive = useRouter().pathname === href
 
   return (
@@ -120,14 +102,12 @@ const NavItem = ({href, children}: NavItemProps): JSX.Element => {
   )
 }
 
-const DesktopNavigation = (
-  props: HTMLAttributes<HTMLMenuElement>
-): JSX.Element => {
+const DesktopNavigation: FC<HTMLAttributes<HTMLMenuElement>> = (props) => {
   return (
     <nav {...props}>
       <ul className="flex rounded-full bg-white/90 px-3 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10">
-        {NAVIGATION.map((item) => (
-          <NavItem href={item.href} key={item.name}>
+        {NAVLINKS.map((item, index) => (
+          <NavItem href={item.href} key={`desktop-nav-${index}`}>
             {item.name}
           </NavItem>
         ))}
@@ -198,11 +178,7 @@ export type AvatarProps = HTMLAttributes<HTMLAnchorElement> & {
 
 const assetsLoader = ({src}: {src: string}) => src
 
-const Avatar = ({
-  large = false,
-  className,
-  ...props
-}: AvatarProps): JSX.Element => {
+const Avatar: FC<AvatarProps> = ({large = false, className, ...props}) => {
   return (
     <Link
       href="/"
@@ -220,12 +196,13 @@ const Avatar = ({
           large ? 'h-16 w-16' : 'h-9 w-9'
         )}
         priority
+        unoptimized
       />
     </Link>
   )
 }
 
-const Header = (): JSX.Element => {
+const Header: FC = () => {
   const isHomePage = useRouter().pathname === '/'
 
   const headerRef = useRef<HTMLDivElement>(null)
@@ -236,7 +213,7 @@ const Header = (): JSX.Element => {
     const downDelay = avatarRef.current?.offsetTop ?? 0
     const upDelay = 64
 
-    const setProperty = (property: string, value: number | string | null) => {
+    const setProperty = (property: string, value: string | null) => {
       document.documentElement.style.setProperty(property, value)
     }
 
@@ -311,7 +288,7 @@ const Header = (): JSX.Element => {
       const borderTransform = `translate3d(${borderX}rem, 0, 0) scale(${borderScale})`
 
       setProperty('--avatar-border-transform', borderTransform)
-      setProperty('--avatar-border-opacity', scale === toScale ? 1 : 0)
+      setProperty('--avatar-border-opacity', scale === toScale ? '1' : '0')
     }
 
     const updateStyles = () => {
@@ -330,6 +307,10 @@ const Header = (): JSX.Element => {
     }
   }, [isHomePage])
 
+  interface CSSPropertiesPosition {
+    position?: CSSProperties['position']
+  }
+
   return (
     <>
       <header
@@ -347,11 +328,19 @@ const Header = (): JSX.Element => {
             />
             <Container
               className="top-0 order-last -mb-3 pt-3"
-              style={{position: 'var(--header-position)'}}
+              style={
+                {
+                  position: 'var(--header-position)',
+                } as unknown as CSSPropertiesPosition
+              }
             >
               <div
                 className="top-[var(--avatar-top,theme(spacing.3))] w-full"
-                style={{position: 'var(--header-inner-position)'}}
+                style={
+                  {
+                    position: 'var(--header-inner-position)',
+                  } as unknown as CSSPropertiesPosition
+                }
               >
                 <div className="relative">
                   <AvatarContainer
@@ -374,11 +363,19 @@ const Header = (): JSX.Element => {
         <div
           ref={headerRef}
           className="top-0 z-10 h-16 pt-6"
-          style={{position: 'var(--header-position)'}}
+          style={
+            {
+              position: 'var(--header-position)',
+            } as unknown as CSSPropertiesPosition
+          }
         >
           <Container
             className="top-[var(--header-top,theme(spacing.6))] w-full"
-            style={{position: 'var(--header-inner-position)'}}
+            style={
+              {
+                position: 'var(--header-inner-position)',
+              } as unknown as CSSPropertiesPosition
+            }
           >
             <div className="relative flex gap-4">
               <div className="flex flex-1">
