@@ -1,13 +1,19 @@
-import {FC, HTMLAttributes, PropsWithChildren} from 'react'
+import {FC, HTMLAttributes, PropsWithChildren, ReactNode} from 'react'
 
 import Container from '@/components/Container'
 
 export type SimpleLayoutProps = {
   title?: string
   intro?: string
+  filters?: ReactNode
 } & PropsWithChildren<HTMLAttributes<HTMLDivElement>>
 
-const SimpleLayout: FC<SimpleLayoutProps> = ({title, intro, children}) => {
+const SimpleLayout: FC<SimpleLayoutProps> = ({
+  title,
+  intro,
+  children,
+  filters,
+}) => {
   return (
     <Container className="mt-16 sm:mt-32">
       <header className="max-w-2xl">
@@ -22,6 +28,7 @@ const SimpleLayout: FC<SimpleLayoutProps> = ({title, intro, children}) => {
           </p>
         )}
       </header>
+      {filters && <div className="mt-16 sm:mt-20">{filters}</div>}
       <div className="mt-16 sm:mt-20">{children}</div>
     </Container>
   )
