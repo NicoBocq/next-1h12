@@ -29,7 +29,7 @@ const SimpleLayout: FC<SimpleLayoutProps> = ({
         )}
       </header>
       {filters && <div className="mt-16 sm:mt-20">{filters}</div>}
-      <div className="mt-16 sm:mt-20">{children}</div>
+      <div className="mt-4 sm:mt-8">{children}</div>
     </Container>
   )
 }
