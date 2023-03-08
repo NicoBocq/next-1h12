@@ -1,3 +1,12 @@
+export type Project = Database['public']['Tables']['project']['Row']
+export type Work = Database['public']['Tables']['work']['Row']
+export type Stack = Database['public']['Tables']['stack']['Row']
+export type Nav = Database['public']['Tables']['page']['Row']
+
+export type NavProps = {
+  nav: Nav[]
+}
+
 export type Json =
   | string
   | number
@@ -12,24 +21,30 @@ export interface Database {
       page: {
         Row: {
           created_at: string | null
-          description: string | null
+          description: string
           id: number
-          slug: string | null
-          title: string | null
+          label: string
+          path: string
+          slug: string
+          title: string
         }
         Insert: {
           created_at?: string | null
-          description?: string | null
+          description: string
           id?: number
-          slug?: string | null
-          title?: string | null
+          label?: string
+          path?: string
+          slug: string
+          title: string
         }
         Update: {
           created_at?: string | null
-          description?: string | null
+          description?: string
           id?: number
-          slug?: string | null
-          title?: string | null
+          label?: string
+          path?: string
+          slug?: string
+          title?: string
         }
       }
       project: {
@@ -39,9 +54,11 @@ export interface Database {
           description: string | null
           git_url: string | null
           id: number
-          slug: string | null
+          release: string
+          slug: string
           title: string | null
           url: string | null
+          stack: Stack[]
         }
         Insert: {
           cover?: string | null
@@ -49,7 +66,8 @@ export interface Database {
           description?: string | null
           git_url?: string | null
           id?: number
-          slug?: string | null
+          release?: string
+          slug: string
           title?: string | null
           url?: string | null
         }
@@ -59,78 +77,83 @@ export interface Database {
           description?: string | null
           git_url?: string | null
           id?: number
-          slug?: string | null
+          release?: string
+          slug?: string
           title?: string | null
           url?: string | null
         }
       }
-      project_stacks: {
+      projects_stacks: {
         Row: {
-          element_id: number
-          id: number
+          project_id: number
           stack_id: number
         }
         Insert: {
-          element_id: number
-          id?: number
+          project_id: number
           stack_id: number
         }
         Update: {
-          element_id?: number
-          id?: number
+          project_id?: number
           stack_id?: number
         }
       }
       stack: {
         Row: {
           id: number
-          name: string | null
+          name: string
+          weight: number
         }
         Insert: {
           id?: number
-          name?: string | null
+          name?: string
+          weight?: number
         }
         Update: {
           id?: number
-          name?: string | null
+          name?: string
+          weight?: number
         }
       }
       work: {
         Row: {
-          company: string | null
+          company: string
           description: string | null
+          end: string | null
           id: number
-          period: string | null
-          title: string | null
+          order: number
+          start: string | null
+          title: string
+          stack: Stack[]
         }
         Insert: {
-          company?: string | null
+          company: string
           description?: string | null
+          end?: string | null
           id?: number
-          period?: string | null
-          title?: string | null
+          order?: number
+          start?: string | null
+          title: string
         }
         Update: {
-          company?: string | null
+          company?: string
           description?: string | null
+          end?: string | null
           id?: number
-          period?: string | null
-          title?: string | null
+          order?: number
+          start?: string | null
+          title?: string
         }
       }
-      work_stacks: {
+      works_stacks: {
         Row: {
-          id: number
           stack_id: number
           work_id: number
         }
         Insert: {
-          id?: number
           stack_id: number
           work_id: number
         }
         Update: {
-          id?: number
           stack_id?: number
           work_id?: number
         }
