@@ -9,7 +9,7 @@ import Container from '@/components/Container'
 import Resume from '@/components/Resume'
 import {GitHubIcon, LinkedInIcon, TwitterIcon} from '@/components/SocialIcons'
 import SocialLink from '@/components/SocialLink'
-import {supabase} from '@/lib/supabase'
+import {getPage, supabase} from '@/lib/supabase'
 import {Project} from '@/types'
 
 type ProjectProps = {
@@ -28,17 +28,6 @@ const Project: FC<ProjectProps> = ({project}) => {
   )
 }
 
-export const generatedMetadata: Metadata = ({params}) => {
-  return {}
-}
-
-export const metadata = {
-  title: 'Nicolas Bocquet - front-end developer',
-  description: 'Nicolas Bocquet - front-end developer',
-  icon: '/images/favicon.ico',
-  type: 'website',
-}
-
 const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   projects,
   works,
@@ -49,13 +38,8 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   return (
     <>
       <Head>
-        <title>1h12</title>
-        <meta
-          name="description"
-          content="Nicolas Bocquet - front-end developer"
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <title>{title}</title>
+        <meta name="description" content={description} />
       </Head>
       <Container className="mt-9">
         <div className="max-w-2xl">
@@ -106,6 +90,14 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
 export default Home
 
+export const generatedMetadata = async () => {
+  const page = await getPage('home')
+  return {
+    title: page?.title ?? '',
+    description: page?.description ?? '',
+  }
+}
+
 export const getStaticProps = async () => {
   const {data: projects} = await supabase
     .from('project')
@@ -115,17 +107,13 @@ export const getStaticProps = async () => {
     .select(`*`)
     .limit(4)
     .order('order')
-  const {data: page} = await supabase
-    .from('page')
-    .select(`*`)
-    .eq('slug', 'home')
-    .single()
+  const page = await getPage('home')
   return {
     props: {
       projects,
       works,
       page,
     },
-    revalidate: 60,
+    revalidate: 3600,
   }
 }

@@ -30,7 +30,7 @@ const SideProjects: NextPage<
 }
 
 export const getStaticPaths = async () => {
-  const {data: pathList, error} = await supabase.from('project').select('slug')
+  const {data: pathList} = await supabase.from('project').select('slug')
   const paths = pathList?.map((project) => ({
     params: {slug: project.slug},
   }))
@@ -47,7 +47,7 @@ interface Params extends ParsedUrlQuery {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const {slug} = context.params as Params
-  const {data: meta, error} = await supabase
+  const {data: meta} = await supabase
     .from('project')
     .select('*')
     .eq('slug', slug)
@@ -56,6 +56,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     props: {
       meta,
     },
+    revalidate: 3600,
   }
 }
 

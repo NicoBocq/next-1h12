@@ -8,13 +8,13 @@ import Card from '@/components/Card'
 import SimpleLayout from '@/components/SimpleLayout'
 import Filters from '@/components/StacksFilter'
 import useStackFilers from '@/hooks/useStackFilters'
-import {supabase} from '@/lib/supabase'
+import {getPage, supabase} from '@/lib/supabase'
 import {Project} from '@/types'
 import {transitionItemVariants} from '@/utils'
 
 const SideProjects: NextPage<
   InferGetStaticPropsType<typeof getStaticProps>
-> = ({projects, page, error, pageError}) => {
+> = ({projects, page}) => {
   const description = page?.description ?? ''
   const title = page?.title ?? ''
 
@@ -53,7 +53,7 @@ const SideProjects: NextPage<
                 custom={(index + 1) * 0.1}
               >
                 <Card as="div">
-                  <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
+                  {/* <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
                     {project.cover && (
                       <Image
                         src={project.cover}
@@ -63,17 +63,18 @@ const SideProjects: NextPage<
                         height={32}
                       />
                     )}
-                  </div>
+                  </div> */}
                   <h2 className="mt-6 text-base font-semibold text-zinc-800 dark:text-zinc-100">
                     <Card.Link href={`sideprojects/${project.slug}`}>
                       {project.title}
                     </Card.Link>
                   </h2>
                   <Card.Description>{project.description}</Card.Description>
-                  <p className="relative z-10 mt-6 flex items-center text-sm font-medium text-zinc-400 transition group-hover:text-teal-500 dark:text-zinc-200">
+                  <Card.Cta>More</Card.Cta>
+                  {/* <p className="relative z-10 mt-6 flex items-center text-sm font-medium text-zinc-400 transition group-hover:text-teal-500 dark:text-zinc-200">
                     <LinkIcon className="h-4 w-4 flex-none" />
                     <span className="ml-2">{project.url}</span>
-                  </p>
+                  </p> */}
                 </Card>
               </motion.li>
             ))}
@@ -87,21 +88,13 @@ const SideProjects: NextPage<
 export default SideProjects
 
 export const getStaticProps = async () => {
-  const {data: page, error: pageError} = await supabase
-    .from('page')
-    .select('title, description')
-    .eq('slug', 'sideprojects')
-    .single()
-  const {data: projects, error} = await supabase
-    .from('project')
-    .select('*, stack (*)')
+  const page = await getPage('sideprojects')
+  const {data: projects} = await supabase.from('project').select('*, stack (*)')
   return {
     props: {
       projects,
       page,
-      error,
-      pageError,
     },
-    revalidate: 60,
+    revalidate: 3600,
   }
 }

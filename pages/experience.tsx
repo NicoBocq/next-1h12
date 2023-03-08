@@ -7,7 +7,7 @@ import Card from '@/components/Card'
 import SimpleLayout from '@/components/SimpleLayout'
 import Filters from '@/components/StacksFilter'
 import useStackFilers from '@/hooks/useStackFilters'
-import {supabase} from '@/lib/supabase'
+import {getPage, supabase} from '@/lib/supabase'
 import {Work} from '@/types'
 import {transitionItemVariants} from '@/utils/'
 
@@ -83,7 +83,9 @@ const Works: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                       work.end ? work.end : 'now'
                     }`}
                   >
-                    <time dateTime={work.start}>{work.start}</time>
+                    {work.start && (
+                      <time dateTime={work.start}>{work.start}</time>
+                    )}
                     {work.end && (
                       <>
                         <span aria-hidden="true">—</span>
@@ -104,20 +106,16 @@ const Works: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 export default Works
 
 export const getStaticProps = async () => {
-  const {data: works, error} = await supabase
+  const {data: works} = await supabase
     .from('work')
     .select('*, stack (*)')
     .order('order')
-  const {data: page, error: pageError} = await supabase
-    .from('page')
-    .select('*')
-    .eq('slug', 'work')
-    .single()
+  const page = await getPage('experience')
   return {
     props: {
       works,
       page,
     },
-    revalidate: 60,
+    revalidate: 3600,
   }
 }
