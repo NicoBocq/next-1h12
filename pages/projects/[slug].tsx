@@ -34,26 +34,13 @@ const SideProjects: NextPage<
   )
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  let paths: {params: {slug: string}}[] = []
-  try {
-    const {data: pathList} = await supabase.from('project').select('slug')
-    if (!pathList) return {paths, fallback: false}
-    paths = pathList?.map((path) => ({
-      params: {
-        slug: path.slug,
-      },
-    }))
-  } catch (error) {
-    console.error(error)
-  }
-
-  // const {data: pathList} = await supabase.from('project').select('slug')
-  // const paths = pathList?.map((path) => ({
-  //   params: {
-  //     slug: path.slug,
-  //   },
-  // }))
+export const getStaticPaths = async () => {
+  const {data: pathList} = await supabase.from('project').select('slug')
+  const paths = pathList?.map((path) => ({
+    params: {
+      slug: path.slug,
+    },
+  }))
 
   return {
     paths,
