@@ -56,15 +56,15 @@ const CardTitle = <T extends ElementType = 'h2'>({
   )
 }
 
-const CardDescription: FC<PropsWithChildren & {preLine?: boolean}> = ({
+const CardDescription: FC<PropsWithChildren & {className?: string}> = ({
   children,
-  preLine = false,
+  className,
 }) => {
   return (
     <p
       className={clsx(
         'relative z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400',
-        preLine && 'whitespace-pre-line'
+        className
       )}
     >
       {children}

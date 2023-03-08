@@ -32,7 +32,7 @@ const StacksFilter: FC<FiltersProps> = ({
       />
 
       <div className="mt-2 sm:mt-0 sm:ml-4">
-        <div className="-m-1 flex flex-wrap items-center space-x-2">
+        <div className="-m-1 flex flex-wrap items-center">
           {filters?.map((filter) => (
             <Badge
               label={filter.name}

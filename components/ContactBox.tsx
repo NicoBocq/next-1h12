@@ -2,7 +2,6 @@ import {FC} from 'react'
 
 import {EnvelopeIcon} from '@heroicons/react/24/solid'
 
-import {GitHubIcon, LinkedInIcon, TwitterIcon} from './SocialIcons'
 import SocialLink from './SocialLink'
 
 const ContactBox: FC = () => {

@@ -21,13 +21,13 @@ const Resume: FC<ResumeProps> = ({works}) => {
         {works.map((role) => (
           <li key={role.id} className="flex gap-4">
             <dl className="flex flex-auto flex-wrap gap-x-2">
-              <dt className="sr-only">Company</dt>
-              <dd className="w-full flex-none text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                {role.company}
-              </dd>
               <dt className="sr-only">Role</dt>
-              <dd className="text-xs text-zinc-500 dark:text-zinc-400">
+              <dd className="w-full flex-none text-sm font-medium text-zinc-900 dark:text-zinc-100">
                 {role.title}
+              </dd>
+              <dt className="sr-only">Company</dt>
+              <dd className="text-xs text-zinc-500 dark:text-zinc-400">
+                {role.company}
               </dd>
               <dt className="sr-only">Date</dt>
               <dd
