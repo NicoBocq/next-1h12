@@ -66,7 +66,7 @@ const Projects: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                     )}
                   </div> */}
                   <h2 className="mt-6 text-base font-semibold text-zinc-800 dark:text-zinc-100">
-                    <Card.Link href={`sideprojects/${project.slug}`}>
+                    <Card.Link href={`projects/${project.slug}`}>
                       {project.title}
                     </Card.Link>
                   </h2>
@@ -89,7 +89,7 @@ const Projects: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 export default Projects
 
 export const getStaticProps = async () => {
-  const page = await getPage('sideprojects')
+  const page = await getPage('projects')
   const {data: projects} = await supabase.from('project').select('*, stack (*)')
   return {
     props: {

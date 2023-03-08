@@ -46,11 +46,7 @@ const Resume: FC<ResumeProps> = ({works}) => {
           </li>
         ))}
       </ol>
-      <Button
-        href="/experience"
-        variant="secondary"
-        className="group mt-6 w-full"
-      >
+      <Button href="/work" variant="secondary" className="group mt-6 w-full">
         More
         <ChevronRightIcon className="h-4 w-4 stroke-zinc-400 transition group-active:stroke-zinc-600 dark:group-hover:stroke-zinc-50 dark:group-active:stroke-zinc-50" />
       </Button>

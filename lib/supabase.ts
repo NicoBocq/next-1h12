@@ -7,8 +7,10 @@ export const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
 )
 
-export const getPage = async (slug: string) => {
-  const {data: page, error} = await supabase
+export type ProjectSlug = 'home' | 'work' | 'projects'
+
+export const getPage = async (slug: ProjectSlug) => {
+  const {data: page} = await supabase
     .from('page')
     .select('*')
     .eq('slug', slug)

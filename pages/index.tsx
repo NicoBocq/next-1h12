@@ -19,7 +19,7 @@ type ProjectProps = {
 const Project: FC<ProjectProps> = ({project}) => {
   return (
     <Card as="article">
-      <Card.Title href={`/sideprojects/${project.slug}`}>
+      <Card.Title href={`/projects/${project.slug}`}>
         {project.title}
       </Card.Title>
       <Card.Description>{project.description}</Card.Description>
@@ -72,7 +72,7 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
         <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
           <div className="flex flex-col gap-16">
             <h2 className="text-2xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100">
-              Sideprojects
+              Projects
             </h2>
             {projects?.map((project) => (
               <Project key={project.id} project={project} />
