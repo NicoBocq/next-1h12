@@ -9,9 +9,9 @@ import Filters from '@/components/StacksFilter'
 import useStackFilers from '@/hooks/useStackFilters'
 import {getPage, supabase} from '@/lib/supabase'
 import {Work} from '@/types'
-import {transitionItemVariants} from '@/utils/'
+import {transitionItemVariants, transitionTiming} from '@/utils/'
 
-const Works: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+const Work: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   works,
   page,
 }) => {
@@ -52,7 +52,7 @@ const Works: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                  custom={(index + 1) * 0.1}
+                  custom={transitionTiming(index)}
                 >
                   <Card
                     as="div"
@@ -103,14 +103,15 @@ const Works: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   )
 }
 
-export default Works
+export default Work
 
 export const getStaticProps = async () => {
   const {data: works} = await supabase
     .from('work')
     .select('*, stack (*)')
     .order('order')
-  const page = await getPage('experience')
+  const page = await getPage('work')
+  console.log(page)
   return {
     props: {
       works,

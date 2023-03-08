@@ -10,11 +10,12 @@ import Filters from '@/components/StacksFilter'
 import useStackFilers from '@/hooks/useStackFilters'
 import {getPage, supabase} from '@/lib/supabase'
 import {Project} from '@/types'
-import {transitionItemVariants} from '@/utils'
+import {transitionItemVariants, transitionTiming} from '@/utils'
 
-const SideProjects: NextPage<
-  InferGetStaticPropsType<typeof getStaticProps>
-> = ({projects, page}) => {
+const Projects: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  projects,
+  page,
+}) => {
   const description = page?.description ?? ''
   const title = page?.title ?? ''
 
@@ -50,7 +51,7 @@ const SideProjects: NextPage<
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
-                custom={(index + 1) * 0.1}
+                custom={transitionTiming(index)}
               >
                 <Card as="div">
                   {/* <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
@@ -85,7 +86,7 @@ const SideProjects: NextPage<
   )
 }
 
-export default SideProjects
+export default Projects
 
 export const getStaticProps = async () => {
   const page = await getPage('sideprojects')

@@ -9,8 +9,6 @@ const useStackFilers = <T extends {stack: Stack[]}>({
   list,
 }: UseStackFilersProps<T>) => {
   const [selectedFilters, setSelectedFilters] = useState<number[]>([])
-  console.log(list)
-  console.log(selectedFilters)
   const stacks = useMemo(() => {
     const flatLIst = list?.map((item) => item.stack).flat()
 

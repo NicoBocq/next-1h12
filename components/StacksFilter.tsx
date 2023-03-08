@@ -18,7 +18,6 @@ const StacksFilter: FC<FiltersProps> = ({
   selectedFilters,
 }) => {
   const isSelected = (id: number) => selectedFilters.includes(id)
-  console.log('filters', filters)
   return (
     <div className="border-t border-b border-zinc-100 py-4 sm:flex sm:items-center md:dark:border-zinc-700/40">
       <h3 className="text-sm font-medium text-gray-500">

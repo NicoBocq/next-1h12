@@ -13,20 +13,23 @@ export const NAVLINKS = [
     href: '/',
   },
   {
-    name: 'Experience',
-    href: '/experience',
+    name: 'Work',
+    href: '/work',
   },
   {
-    name: 'Sideprojects',
-    href: '/sideprojects',
+    name: 'Projects',
+    href: '/projects',
   },
 ]
 
 export const transitionItemVariants = {
-  hidden: {opacity: 0, x: -100},
+  hidden: {opacity: 0},
   visible: (custom: number) => ({
     opacity: 1,
-    x: 0,
     transition: {delay: custom},
   }),
+}
+
+export const transitionTiming = (index: number) => {
+  return (index + 1) * 0.2
 }
