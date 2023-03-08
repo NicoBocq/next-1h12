@@ -34,7 +34,7 @@ const Resume: FC<ResumeProps> = ({works}) => {
                 className="ml-auto space-x-1 text-xs text-zinc-400 dark:text-zinc-500"
                 aria-label={`${role.start} until ${role.end}`}
               >
-                <time dateTime={role.start}>{role.start}</time>
+                {role.start && <time dateTime={role.start}>{role.start}</time>}
                 {role.end && (
                   <>
                     <span aria-hidden="true">—</span>
