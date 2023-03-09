@@ -19,10 +19,9 @@ const StacksFilter: FC<FiltersProps> = ({
 }) => {
   const isSelected = (id: number) => selectedFilters.includes(id)
   return (
-    <div className="border-t border-b border-zinc-100 py-4 sm:flex sm:items-center md:dark:border-zinc-700/40">
-      <h3 className="text-sm font-medium text-gray-500">
+    <div className="border-t border-b border-zinc-100 py-4 sm:flex sm:items-start md:dark:border-zinc-700/40">
+      <h3 className="flex-shrink-0 text-sm font-medium text-gray-500">
         Filter by stack
-        <span className="sr-only">, active</span>
       </h3>
 
       <div
