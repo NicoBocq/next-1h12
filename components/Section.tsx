@@ -4,7 +4,7 @@ export type SectionProps = {
   title: string
 } & HTMLAttributes<HTMLDivElement>
 
-const Section: FC<SectionProps> = ({title, children}) => {
+function Section({title, children}: SectionProps) {
   const id = useId()
 
   return (

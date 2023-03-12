@@ -1,23 +1,22 @@
-import {FC} from 'react'
-
-import {Transition} from '@headlessui/react'
-
 import {Stack} from '@/types'
 
 import Badge from './Badge'
 
 export type FiltersProps = {
-  filters?: Stack[]
+  filters?: Stack[] | null
   handleOnSelect: (value: number) => void
   selectedFilters: number[]
 }
 
-const StacksFilter: FC<FiltersProps> = ({
+function StacksFilter({
   filters,
   handleOnSelect,
   selectedFilters,
-}) => {
-  const isSelected = (id: number) => selectedFilters.includes(id)
+}: FiltersProps) {
+  function isSelected(id: number) {
+    return selectedFilters.includes(id)
+  }
+
   return (
     <div className="border-t border-b border-zinc-100 py-4 sm:flex sm:items-start md:dark:border-zinc-700/40">
       <h3 className="flex-shrink-0 text-sm font-medium text-gray-500">

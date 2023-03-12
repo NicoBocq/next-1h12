@@ -1,11 +1,11 @@
-import {FC, PropsWithChildren, useMemo} from 'react'
+import {PropsWithChildren, useMemo} from 'react'
 
 import Link, {LinkProps} from 'next/link'
 
 import Container from '@/components/Container'
 import {NAVLINKS} from '@/utils'
 
-const NavLink: FC<LinkProps & PropsWithChildren> = ({href, children}) => {
+function NavLink({href, children}: LinkProps & PropsWithChildren) {
   return (
     <Link
       href={href}
@@ -16,7 +16,7 @@ const NavLink: FC<LinkProps & PropsWithChildren> = ({href, children}) => {
   )
 }
 
-const Footer: FC = () => {
+function Footer() {
   const renderList = useMemo(
     () =>
       NAVLINKS.map((link, index) => {

@@ -1,4 +1,4 @@
-import {FC, HTMLAttributes, PropsWithChildren, ReactNode} from 'react'
+import {HTMLAttributes, PropsWithChildren, ReactNode} from 'react'
 
 import Container from '@/components/Container'
 
@@ -8,12 +8,7 @@ export type SimpleLayoutProps = {
   filters?: ReactNode
 } & PropsWithChildren<HTMLAttributes<HTMLDivElement>>
 
-const SimpleLayout: FC<SimpleLayoutProps> = ({
-  title,
-  intro,
-  children,
-  filters,
-}) => {
+function SimpleLayout({title, intro, children, filters}: SimpleLayoutProps) {
   return (
     <Container className="mt-16 sm:mt-32">
       <header className="max-w-2xl">

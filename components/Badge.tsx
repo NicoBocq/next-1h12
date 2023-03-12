@@ -9,7 +9,7 @@ export type BadgeProps = {
   isSelected?: boolean
 }
 
-const Badge: FC<BadgeProps> = ({children, onClick, label, isSelected}) => {
+function Badge({children, onClick, label, isSelected}: BadgeProps) {
   const handleOnClick = (event: MouseEvent<HTMLSpanElement>) => {
     if (!onClick) return
 

@@ -29,7 +29,7 @@ export type MobileNavItemProps = {
   children: ReactNode
 }
 
-const MobileNavItem: FC<MobileNavItemProps> = ({href, children}) => {
+function MobileNavItem({href, children}: MobileNavItemProps) {
   return (
     <li>
       <Popover.Button as={Link} href={href} className="block py-2">
@@ -39,7 +39,7 @@ const MobileNavItem: FC<MobileNavItemProps> = ({href, children}) => {
   )
 }
 
-const MobileNavigation: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
+function MobileNavigation(props: HTMLAttributes<HTMLDivElement>) {
   return (
     <Popover {...props}>
       <Popover.Button className="group flex items-center rounded-full bg-white/90 px-4 py-2 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10 dark:hover:ring-white/20">
@@ -79,7 +79,7 @@ export type NavItemProps = {
   children: ReactNode
 }
 
-const NavItem: FC<NavItemProps> = ({href, children}) => {
+function NavItem({href, children}: NavItemProps) {
   const isActive = useRouter().pathname === href
 
   return (
@@ -102,7 +102,7 @@ const NavItem: FC<NavItemProps> = ({href, children}) => {
   )
 }
 
-const DesktopNavigation: FC<HTMLAttributes<HTMLMenuElement>> = (props) => {
+function DesktopNavigation(props: HTMLAttributes<HTMLMenuElement>) {
   return (
     <nav {...props}>
       <ul className="flex rounded-full bg-white/90 px-3 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10">
@@ -116,7 +116,7 @@ const DesktopNavigation: FC<HTMLAttributes<HTMLMenuElement>> = (props) => {
   )
 }
 
-const ModeToggle = () => {
+function ModeToggle() {
   const disableTransitionsTemporarily = () => {
     document.documentElement.classList.add('[&_*]:!transition-none')
     window.setTimeout(() => {
@@ -124,7 +124,7 @@ const ModeToggle = () => {
     }, 0)
   }
 
-  const toggleMode = () => {
+  function toggleMode() {
     disableTransitionsTemporarily()
 
     const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -151,16 +151,16 @@ const ModeToggle = () => {
   )
 }
 
-const clamp = (number: number, a: number, b: number) => {
+function clamp(number: number, a: number, b: number) {
   const min = Math.min(a, b)
   const max = Math.max(a, b)
   return Math.min(Math.max(number, min), max)
 }
 
-const AvatarContainer = ({
+function AvatarContainer({
   className,
   ...props
-}: HTMLAttributes<HTMLDivElement>) => {
+}: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={clsx(
@@ -176,9 +176,15 @@ export type AvatarProps = HTMLAttributes<HTMLAnchorElement> & {
   large?: boolean
 }
 
-const assetsLoader = ({src}: {src: string}) => src
+export type AssetsLoaderProps = {
+  src: string
+}
 
-const Avatar: FC<AvatarProps> = ({large = false, className, ...props}) => {
+function assetsLoader({src}: AssetsLoaderProps) {
+  return src
+}
+
+function Avatar({large = false, className, ...props}: AvatarProps) {
   return (
     <Link
       href="/"
@@ -202,7 +208,7 @@ const Avatar: FC<AvatarProps> = ({large = false, className, ...props}) => {
   )
 }
 
-const Header: FC = () => {
+function Header() {
   const isHomePage = useRouter().pathname === '/'
 
   const headerRef = useRef<HTMLDivElement>(null)
@@ -221,7 +227,7 @@ const Header: FC = () => {
       document.documentElement.style.removeProperty(property)
     }
 
-    const updateHeaderStyles = () => {
+    function updateHeaderStyles() {
       const element = headerRef.current?.getBoundingClientRect()
       const top = element?.top ?? 0
       const height = element?.height ?? 0
@@ -260,7 +266,7 @@ const Header: FC = () => {
       }
     }
 
-    const updateAvatarStyles = () => {
+    function updateAvatarStyles() {
       if (!isHomePage) {
         return
       }
@@ -291,7 +297,7 @@ const Header: FC = () => {
       setProperty('--avatar-border-opacity', scale === toScale ? '1' : '0')
     }
 
-    const updateStyles = () => {
+    function updateStyles() {
       updateHeaderStyles()
       updateAvatarStyles()
       isInitial.current = false
@@ -307,7 +313,7 @@ const Header: FC = () => {
     }
   }, [isHomePage])
 
-  interface CSSPropertiesPosition {
+  type CSSPropertiesPosition = {
     position?: CSSProperties['position']
   }
 

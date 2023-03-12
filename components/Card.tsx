@@ -10,11 +10,11 @@ export type CardProps<T extends ElementType> = {
   children: ReactNode
 }
 
-const Card = <T extends ElementType = 'div'>({
+function Card<T extends ElementType = 'div'>({
   as,
   className,
   children,
-}: CardProps<T>) => {
+}: CardProps<T>) {
   const Component = as || 'div'
   return (
     <Component
@@ -25,7 +25,7 @@ const Card = <T extends ElementType = 'div'>({
   )
 }
 
-const CardLink: FC<LinkProps & PropsWithChildren> = ({children, ...props}) => {
+function CardLink({children, ...props}: LinkProps & PropsWithChildren) {
   return (
     <>
       <div className="absolute -inset-y-6 -inset-x-4 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl" />
@@ -43,11 +43,11 @@ export type CardTitleProps<T extends ElementType> = {
   children: ReactNode
 }
 
-const CardTitle = <T extends ElementType = 'h2'>({
+function CardTitle<T extends ElementType = 'h2'>({
   as,
   href,
   children,
-}: CardTitleProps<T>) => {
+}: CardTitleProps<T>) {
   const Component = as || 'h2'
   return (
     <Component className="text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
@@ -56,10 +56,10 @@ const CardTitle = <T extends ElementType = 'h2'>({
   )
 }
 
-const CardDescription: FC<PropsWithChildren & {className?: string}> = ({
+function CardDescription({
   children,
   className,
-}) => {
+}: PropsWithChildren & {className?: string}) {
   return (
     <p
       className={clsx(
@@ -71,7 +71,7 @@ const CardDescription: FC<PropsWithChildren & {className?: string}> = ({
     </p>
   )
 }
-const CardCta: FC<PropsWithChildren> = ({children}) => {
+function CardCta({children}: PropsWithChildren) {
   return (
     <div
       aria-hidden="true"
@@ -90,13 +90,13 @@ export type CardEyebrowProps<T extends ElementType> = {
   className?: string
 }
 
-const CardEyebrow = <T extends ElementType = 'p'>({
+function CardEyebrow<T extends ElementType = 'p'>({
   as,
   decorate = false,
   className,
   children,
   ...props
-}: CardEyebrowProps<T>) => {
+}: CardEyebrowProps<T>) {
   const Component = as || 'p'
   return (
     <Component

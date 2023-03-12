@@ -1,11 +1,11 @@
-import {FC, HTMLAttributes, PropsWithChildren} from 'react'
+import {HTMLAttributes, PropsWithChildren} from 'react'
 
 import clsx from 'clsx'
 
-const Prose: FC<PropsWithChildren & HTMLAttributes<HTMLDivElement>> = ({
+function Prose({
   children,
   className,
-}) => {
+}: PropsWithChildren & HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={clsx(className, 'prose whitespace-pre-line dark:prose-invert')}

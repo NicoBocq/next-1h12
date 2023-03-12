@@ -8,7 +8,7 @@ export type SocialLinkProps = LinkProps & {
   children?: ReactNode
 }
 
-const SocialLink: FC<SocialLinkProps> = ({icon: Icon, children, ...props}) => {
+function SocialLink({icon: Icon, children, ...props}: SocialLinkProps) {
   return (
     <Link
       {...props}
