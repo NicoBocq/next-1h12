@@ -9,16 +9,6 @@ const useStackFilers = <T extends {stack: Stack[]}>({
   list,
 }: UseStackFilersProps<T>) => {
   const [selectedFilters, setSelectedFilters] = useState<number[]>([])
-  const stacks = useMemo(() => {
-    const flatLIst = list?.map((item) => item.stack).flat()
-
-    return flatLIst
-      ?.filter(
-        (stack, index, self) =>
-          index === self.findIndex((t) => t.id === stack.id)
-      )
-      .sort((a, b) => a.weight - b.weight)
-  }, [list])
 
   const handleOnSelect = (stackId: number) => {
     if (selectedFilters.includes(stackId)) {
@@ -39,7 +29,7 @@ const useStackFilers = <T extends {stack: Stack[]}>({
     })
   }, [list, selectedFilters])
 
-  return {filteredList, stacks, handleOnSelect, selectedFilters} as const
+  return {filteredList, handleOnSelect, selectedFilters} as const
 }
 
 export default useStackFilers

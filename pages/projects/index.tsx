@@ -1,6 +1,5 @@
-import {LinkIcon} from '@heroicons/react/24/solid'
 import {AnimatePresence, motion} from 'framer-motion'
-import {InferGetStaticPropsType, NextPage} from 'next'
+import {InferGetStaticPropsType} from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 
@@ -12,14 +11,15 @@ import {getPage, supabase} from '@/lib/supabase'
 import {Project} from '@/types'
 import {transitionItemVariants, transitionTiming} from '@/utils'
 
-const Projects: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+function Projects({
   projects,
   page,
-}) => {
+  stacks,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   const description = page?.description ?? ''
   const title = page?.title ?? ''
 
-  const {stacks, filteredList, handleOnSelect, selectedFilters} =
+  const {filteredList, handleOnSelect, selectedFilters} =
     useStackFilers<Project>({
       list: projects,
     })
@@ -91,10 +91,15 @@ export default Projects
 export const getStaticProps = async () => {
   const page = await getPage('projects')
   const {data: projects} = await supabase.from('project').select('*, stack (*)')
+  const {data: stacks} = await supabase
+    .from('distinct_projects_stacks')
+    .select('*')
+    .order('weight', {ascending: true})
   return {
     props: {
       projects,
       page,
+      stacks,
     },
     revalidate: 3600,
   }

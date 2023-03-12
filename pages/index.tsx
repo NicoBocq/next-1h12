@@ -1,6 +1,4 @@
-import {FC} from 'react'
-
-import type {InferGetStaticPropsType, Metadata, NextPage} from 'next'
+import type {InferGetStaticPropsType} from 'next'
 import Head from 'next/head'
 
 import Card from '@/components/Card'
@@ -16,7 +14,7 @@ type ProjectProps = {
   project: Project
 }
 
-const Project: FC<ProjectProps> = ({project}) => {
+function Project({project}: ProjectProps) {
   return (
     <Card as="article">
       <Card.Title href={`/projects/${project.slug}`}>
@@ -28,17 +26,17 @@ const Project: FC<ProjectProps> = ({project}) => {
   )
 }
 
-const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+function Home({
   projects,
   works,
   page,
-}) => {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   const description = page?.description ?? ''
   const title = page?.title ?? ''
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>Nicolas Bocquet - {title}</title>
         <meta name="description" content={description} />
       </Head>
       <Container className="mt-9">
@@ -71,9 +69,6 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
       <Container className="mt-24 md:mt-28">
         <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
           <div className="flex flex-col gap-16">
-            <h2 className="text-2xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100">
-              Projects
-            </h2>
             {projects?.map((project) => (
               <Project key={project.id} project={project} />
             ))}

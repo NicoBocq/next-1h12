@@ -1,35 +1,35 @@
 import {ParsedUrlQuery} from 'querystring'
 
-import {
-  GetStaticPaths,
-  GetStaticProps,
-  InferGetStaticPropsType,
-  NextPage,
-} from 'next'
+import {GetStaticProps, InferGetStaticPropsType} from 'next'
 import Image from 'next/image'
 
 import ArticleLayout from '@/components/ArticleLayout'
+import Badge from '@/components/Badge'
 import {supabase} from '@/lib/supabase'
 
-const SideProjects: NextPage<
-  InferGetStaticPropsType<typeof getStaticProps> & {
-    previousPathname: string
-  }
-> = ({meta, previousPathname}) => {
+function SideProjects({
+  meta,
+  previousPathname,
+}: InferGetStaticPropsType<typeof getStaticProps> & {
+  previousPathname: string
+}) {
   const description = meta?.description ?? ''
   const title = meta?.title ?? ''
   const cover = meta?.cover ?? ''
   const release = meta?.release ?? ''
+  const stack = meta?.stack ?? []
+  const content = meta?.content ?? ''
 
   return (
     <ArticleLayout
       title={title}
       description={description}
       date={release}
+      tags={stack}
       previousPathname={previousPathname}
     >
       <Image src={cover} alt={title} width={700} height={400} />
-      {description}
+      {content}
     </ArticleLayout>
   )
 }
@@ -56,7 +56,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const {slug} = context.params as Params
   const {data: meta} = await supabase
     .from('project')
-    .select('*')
+    .select('*, stack(*)')
     .eq('slug', slug)
     .single()
   return {

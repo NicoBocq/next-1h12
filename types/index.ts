@@ -59,6 +59,7 @@ export interface Database {
           title: string | null
           url: string | null
           stack: Stack[]
+          content: string | null
         }
         Insert: {
           cover?: string | null
@@ -160,7 +161,20 @@ export interface Database {
       }
     }
     Views: {
-      [_ in never]: never
+      distinct_works_stacks: {
+        Row: {
+          id: number
+          name: string
+          weight: number
+        }
+      }
+      distinct_projects_stacks: {
+        Row: {
+          id: number
+          name: string
+          weight: number
+        }
+      }
     }
     Functions: {
       [_ in never]: never

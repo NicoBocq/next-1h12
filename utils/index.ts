@@ -13,8 +13,8 @@ export const NAVLINKS = [
     href: '/',
   },
   {
-    name: 'Work',
-    href: '/work',
+    name: 'Experience',
+    href: '/experience',
   },
   {
     name: 'Projects',
@@ -30,6 +30,6 @@ export const transitionItemVariants = {
   }),
 }
 
-export const transitionTiming = (index: number) => {
+export function transitionTiming(index: number) {
   return (index + 1) * 0.2
 }

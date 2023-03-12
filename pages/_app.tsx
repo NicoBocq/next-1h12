@@ -1,4 +1,4 @@
-import {FC, useEffect, useRef} from 'react'
+import {useEffect, useRef} from 'react'
 
 import '@/styles/globals.css'
 import type {AppProps} from 'next/app'
@@ -17,7 +17,7 @@ const usePrevious = (value: string) => {
   return ref.current
 }
 
-const App: FC<AppProps> = ({Component, pageProps, router}) => {
+function App({Component, pageProps, router}: AppProps) {
   const previousPathname = usePrevious(router.pathname)
   return (
     <>

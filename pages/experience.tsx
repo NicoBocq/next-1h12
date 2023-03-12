@@ -1,9 +1,10 @@
 import {AnimatePresence, motion} from 'framer-motion'
-import {InferGetStaticPropsType, NextPage} from 'next'
+import {InferGetStaticPropsType} from 'next'
 import Head from 'next/head'
 
 import Badge from '@/components/Badge'
 import Card from '@/components/Card'
+import Period from '@/components/Period'
 import SimpleLayout from '@/components/SimpleLayout'
 import Filters from '@/components/StacksFilter'
 import useStackFilers from '@/hooks/useStackFilters'
@@ -11,17 +12,22 @@ import {getPage, supabase} from '@/lib/supabase'
 import {Work} from '@/types'
 import {transitionItemVariants, transitionTiming} from '@/utils/'
 
-const Work: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+function Work({
   works,
   page,
-}) => {
+  stacks,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   const title = page?.title ?? ''
   const description = page?.description ?? ''
 
-  const {stacks, filteredList, handleOnSelect, selectedFilters} =
-    useStackFilers<Work>({
-      list: works,
-    })
+  const {filteredList, handleOnSelect, selectedFilters} = useStackFilers<Work>({
+    list: works,
+  })
+
+  const ariaLabelPeriod = (work: Work) => {
+    const {start, end} = work
+    return `${start} until ${end ? end : 'Present'}`
+  }
 
   return (
     <>
@@ -58,6 +64,14 @@ const Work: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                     as="div"
                     className="bg-white dark:bg-zinc-900 md:col-span-3"
                   >
+                    <Card.Eyebrow
+                      as="time"
+                      aria-label={ariaLabelPeriod(work)}
+                      className="md:hidden"
+                      decorate
+                    >
+                      <Period start={work.start} end={work.end} />
+                    </Card.Eyebrow>
                     <h2 className="mt-6 text-base font-semibold text-zinc-800 dark:text-zinc-100">
                       {work.title}{' '}
                       <span className="ml-1 font-light text-zinc-800 dark:text-zinc-100">
@@ -72,26 +86,12 @@ const Work: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                         <Badge key={stack.id} label={stack.name} />
                       ))}
                     </Card.Description>
-                    {/* <p className="relative z-10 mt-6 flex items-center text-sm font-medium text-zinc-400 transition group-hover:text-teal-500 dark:text-zinc-200">
-                    <LinkIcon className="h-4 w-4 flex-none" />
-                    <span className="ml-2">{work.url}</span>
-                  </p> */}
                   </Card>
                   <Card.Eyebrow
                     className="mt-1 hidden space-x-1 md:block"
-                    aria-label={`${work.start} until ${
-                      work.end ? work.end : 'now'
-                    }`}
+                    aria-label={ariaLabelPeriod(work)}
                   >
-                    {work.start && (
-                      <time dateTime={work.start}>{work.start}</time>
-                    )}
-                    {work.end && (
-                      <>
-                        <span aria-hidden="true">—</span>
-                        <time dateTime={work.end}>{work.end}</time>
-                      </>
-                    )}
+                    <Period start={work.start} end={work.end} />
                   </Card.Eyebrow>
                 </motion.article>
               ))}
@@ -106,16 +106,20 @@ const Work: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 export default Work
 
 export const getStaticProps = async () => {
+  const page = await getPage('work')
   const {data: works} = await supabase
     .from('work')
     .select('*, stack (*)')
     .order('order')
-  const page = await getPage('work')
-  console.log(page)
+  const {data: stacks} = await supabase
+    .from('distinct_works_stacks')
+    .select('*')
+    .order('weight', {ascending: true})
   return {
     props: {
       works,
       page,
+      stacks,
     },
     revalidate: 3600,
   }
