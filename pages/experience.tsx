@@ -72,12 +72,12 @@ function Work({
                     >
                       <Period start={work.start} end={work.end} />
                     </Card.Eyebrow>
-                    <h2 className="mt-6 text-base font-semibold text-zinc-800 dark:text-zinc-100">
+                    <Card.Title>
                       {work.title}{' '}
                       <span className="ml-1 font-light text-zinc-800 dark:text-zinc-100">
                         {work.company}
                       </span>
-                    </h2>
+                    </Card.Title>
                     <Card.Description className="whitespace-pre-line">
                       {work.description}
                     </Card.Description>
